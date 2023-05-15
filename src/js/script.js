@@ -11,7 +11,7 @@
       images: '.book__image',
     },
   };
-
+  // reference to template and list
   const templates = {
     templateBooks: Handlebars.compile(document.querySelector(select.templateOf.booksProduct).innerHTML),
   };
@@ -31,7 +31,7 @@
       const thisBooks = this;
 
       thisBooks.booksData = dataSource.books;
-      thisBooks.favouriteBooks = [];
+      thisBooks.favoriteBooks = [];
     }
 
     getElement() {
