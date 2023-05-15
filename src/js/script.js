@@ -8,8 +8,6 @@
     },
     containerOf: {
       books: '.books-list',
-    },
-    imageWrapper: {
       images: '.book__image',
     },
   };
@@ -42,21 +40,27 @@
 
   render();
   function initActions() {
-    const images = document.querySelectorAll(select.imageWrapper.images);
+    const images = document.querySelector(select.containerOf.images);
 
-    console.log(images);
+    images.addEventListener('dblclick', function (event) {
+      event.preventDefault();
 
-    for (const image of images) {
-      image.addEventListener('dblclick', function (event) {
-        event.preventDefault();
-        console.log(image);
-        image.classList.toggle('favorite');
+      const image = event.target.offsetParent;
+      const dataID = image.getAttribute('data-id');
 
-        const dataID = image.getAttribute('data-id');
+      if (!image.classList.contains('.book__image')) {
+        // console.log('yaaas');
+        image.classList.add('favorite');
         favouriteBooks.push(dataID);
         console.log(favouriteBooks);
-      });
-    }
+      } else {
+        image.classList.remove('favorite');
+        const indexOfID = favouriteBooks.indexOf(dataID);
+        console.log(indexOfID);
+        favouriteBooks.splice(indexOfID, 1);
+        console.log(favouriteBooks);
+      }
+    });
   }
   initActions();
 }
