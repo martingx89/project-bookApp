@@ -40,7 +40,7 @@
 
   render();
   function initActions() {
-    const images = document.querySelector(select.containerOf.images);
+    const images = document.querySelector(select.containerOf.books);
 
     images.addEventListener('dblclick', function (event) {
       event.preventDefault();
@@ -48,7 +48,7 @@
       const image = event.target.offsetParent;
       const dataID = image.getAttribute('data-id');
 
-      if (!image.classList.contains('.book__image')) {
+      if (!image.classList.contains('favorite')) {
         // console.log('yaaas');
         image.classList.add('favorite');
         favouriteBooks.push(dataID);
