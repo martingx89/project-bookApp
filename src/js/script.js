@@ -16,51 +16,66 @@
     templateBooks: Handlebars.compile(document.querySelector(select.templateOf.booksProduct).innerHTML),
   };
 
-  const booksData = dataSource.books;
+  class BooksList {
+    constructor() {
+      const thisBooks = this;
+      console.log(thisBooks);
 
-  // console.log(booksData);
+      thisBooks.initData();
+      thisBooks.getElement();
+      thisBooks.render();
+      thisBooks.initActions();
+    }
 
-  const favouriteBooks = [];
+    initData() {
+      const thisBooks = this;
 
-  const books = document.querySelector(select.containerOf.books);
+      thisBooks.booksData = dataSource.books;
+      thisBooks.favouriteBooks = [];
+    }
 
-  function render() {
-    for (let book of booksData) {
-      const generateHTML = templates.templateBooks({
-        id: book.id,
-        name: book.name,
-        price: book.price,
-        rating: book.rating,
-        image: book.image,
+    getElement() {
+      const thisBooks = this;
+      thisBooks.bookContainer = document.querySelector(select.containerOf.books);
+    }
+
+    render() {
+      const thisBooks = this;
+
+      for (let book of thisBooks.booksData) {
+        const generateHTML = templates.templateBooks({
+          id: book.id,
+          name: book.name,
+          price: book.price,
+          rating: book.rating,
+          image: book.image,
+        });
+        const element = utils.createDOMFromHTML(generateHTML);
+        thisBooks.bookContainer.appendChild(element);
+      }
+    }
+
+    initActions() {
+      const thisBooks = this;
+      thisBooks.bookContainer.addEventListener('dblclick', function (event) {
+        event.preventDefault();
+
+        const image = event.target.offsetParent;
+
+        const dataId = image.getAttribute('data-id');
+
+        if (!thisBooks.favoriteBooks.includes(dataId)) {
+          image.classList.add('favorite');
+          thisBooks.favoriteBooks.push(dataId);
+        } else {
+          const indexOfBooks = thisBooks.favoriteBooks.indexOf(dataId);
+          thisBooks.favoriteBooks.splice(indexOfBooks, 1);
+          image.classList.remove('favorite');
+        }
       });
-      const e = utils.createDOMFromHTML(generateHTML);
-      books.appendChild(e);
     }
   }
 
-  render();
-  function initActions() {
-    const images = document.querySelector(select.containerOf.images);
-
-    images.addEventListener('dblclick', function (event) {
-      event.preventDefault();
-
-      const image = event.target.offsetParent;
-      const dataID = image.getAttribute('data-id');
-
-      if (!image.classList.contains('.book__image')) {
-        // console.log('yaaas');
-        image.classList.add('favorite');
-        favouriteBooks.push(dataID);
-        console.log(favouriteBooks);
-      } else {
-        image.classList.remove('favorite');
-        const indexOfID = favouriteBooks.indexOf(dataID);
-        console.log(indexOfID);
-        favouriteBooks.splice(indexOfID, 1);
-        console.log(favouriteBooks);
-      }
-    });
-  }
-  initActions();
+  const app = new BooksList();
+  console.log(app);
 }
